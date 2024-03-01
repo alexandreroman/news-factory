@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>News Factory</title>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+        rel="stylesheet">
+</head>
+<body data-bs-theme="light" class="container">
+
+<header class="my-3">
+  <div class="row">
+    <h1 class="col-12 text-center">
+      <a th:href="@{/}">📰 News Factory</a></h1>
+  </div>
+</header>
+
+<div class="my-3 p-2">
+  <main layout:fragment="content">
+    <p>Page content goes here</p>
+  </main>
+</div>
+
+<footer>
+  <div>
+    <p id="powered-by" class="text-secondary text-end me-2">
+      <span class="me-1">powered by</span>
+      <img th:src="@{/images/spring-logo.png}" alt="Spring Logo"
+           width="90" height="23"/>
+    </p>
+  </div>
+  <a class="github-fork-ribbon right-bottom fixed" href="https://github.com/alexandreroman/news-factory"
+     data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
+</footer>
+
+<script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/webjars/htmx.org/1.9.10/dist/htmx.min.js}"></script>
+
+</body>
+</html>

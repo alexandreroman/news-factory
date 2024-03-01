@@ -1,0 +1,2 @@
+Generate an introduction for a monthly newsletter with up to 100 words.
+This newsletter is focusing on the following topics: {topics}.

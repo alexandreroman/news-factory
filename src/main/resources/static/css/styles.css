@@ -1,0 +1,34 @@
+body {
+  max-width: 800px !important;
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+}
+
+header a {
+  text-decoration: none;
+  color: black;
+}
+
+header a:hover {
+  color: #666;
+}
+
+.newsletter-topic {
+  border: none;
+}
+
+.htmx-indicator {
+  display: none;
+}
+
+.htmx-request .htmx-indicator {
+  display: inline-block;
+}
+
+#powered-by {
+  font-size: 80%;
+}
+
+.github-fork-ribbon:before {
+  background-color: black;
+}

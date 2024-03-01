@@ -1,0 +1,81 @@
+<section id="newsletter">
+  <div class="card shadow rounded bg-body">
+    <div class="card-header">
+      Prepare your newsletter
+    </div>
+    <div class="card-body">
+      <div class="m-2">
+        <form method="POST" action="#" th:object="${form}">
+          <div th:each="source, iter: ${form.sources}">
+            <input type="hidden" th:field="*{sources[__${iter.index}__]}"/>
+          </div>
+          <div th:each="topic, iter: ${form.topics}">
+            <input type="hidden" th:field="*{topics[__${iter.index}__]}"/>
+          </div>
+
+          <p class="row">Add a topic to cover in the newsletter:</p>
+          <div class="row align-items-center">
+            <span class="input-group mb-3">
+                <input class="form-control form-control-sm" type="text" th:field="*{newTopic}"/>
+                <button th:hx-post="@{/newsletter-add-topic}" hx-target="#newsletter"
+                        type="button" id="btn-newsletter-add-topic" class="btn btn-success">Add</button>
+        </span>
+          </div>
+          <div class="row align-items-center" th:if="${form.topics}">
+            <div class="col mb-3">
+              <button th:each="topic, iter: ${form.topics}"
+                    class="newsletter-topic badge rounded-pill bg-secondary p-2 me-1"
+                    th:hx-post="@{/newsletter-remove-topic/__${iter.index}__}"
+                    hx-target="#newsletter" th:text="${topic}"></button>
+            </div>
+          </div>
+
+          <p class="row mt-3">Add an URL to include in the newsletter:</p>
+          <div class="row align-items-center">
+            <span class="input-group mb-3">
+              <input class="form-control form-control-sm" type="text" th:field="*{newSource}"/>
+              <button th:hx-post="@{/newsletter-add-source}" hx-target="#newsletter"
+                      type="button" id="btn-newsletter-add-source" class="btn btn-success">Add</button>
+            </span>
+          </div>
+          <div class="row align-items-center" th:each="source, iter: ${form.sources}">
+            <span class="input-group mb-3">
+              <input class="form-control form-control-sm" type="url" th:field="*{sources[__${iter.index}__]}" disabled
+                     readonly/>
+              <button th:hx-post="@{/newsletter-remove-source/__${iter.index}__}" hx-target="#newsletter"
+                      type="button" class="btn btn-danger">Remove</button>
+            </span>
+          </div>
+
+          <div class="row justify-content-center mt-3">
+            <div class="col-auto">
+              <button class="btn btn-primary" type="submit"
+                      th:hx-post="@{/newsletter.html}"
+                      hx-target="#newsletter"
+                      hx-disabled-elt="#newsletter input, #newsletter button"
+                      th:disabled="${form.sources.isEmpty() || form.topics.isEmpty() }">
+                Generate
+                <span class="htmx-indicator spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+      document.getElementById("newTopic").addEventListener("keypress", function (event) {
+          if (event.key === "Enter") {
+              event.preventDefault();
+              document.getElementById("btn-newsletter-add-topic").click();
+          }
+      });
+      document.getElementById("newSource").addEventListener("keypress", function (event) {
+          if (event.key === "Enter") {
+              event.preventDefault();
+              document.getElementById("btn-newsletter-add-source").click();
+          }
+      });
+  </script>
+</section>

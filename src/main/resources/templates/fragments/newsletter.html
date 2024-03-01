@@ -1,0 +1,34 @@
+<section id="newsletter">
+  <div class="card shadow rounded bg-body">
+    <div class="card-header">
+      AI-generated newsletter
+    </div>
+
+    <div class="card-body">
+      <div class="m-2">
+        <div id="newsletter-intro">
+          <p th:text="${newsletter.intro}"></p>
+        </div>
+
+        <div class="newsletter-entry" style="font-size: 90%" th:each="entry: ${newsletter.entries}">
+          <hr/>
+          <h2 class="newsletter-entry-title">
+            <a target="_blank" th:href="${entry.source}" th:text="${entry.title}"></a>
+          </h2>
+          <p class="newsletter-entry-content" th:text="${entry.content}"></p>
+        </div>
+
+        <hr/>
+        <div id="newsletter-outro">
+          <p th:text="${newsletter.outro}"></p>
+        </div>
+      </div>
+
+      <div class="row justify-content-center mt-3">
+        <div class="col-auto">
+          <a th:href="@{/}" class="btn btn-primary">Reset</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
