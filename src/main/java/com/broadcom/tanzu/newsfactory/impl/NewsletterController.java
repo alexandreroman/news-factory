@@ -50,7 +50,7 @@ class NewsletterController {
     @GetMapping(value = "/")
     String getForm(Model model) {
         model.addAttribute("form", new NewsletterForm());
-        return "views/newsletter-form";
+        return "/views/newsletter-form";
     }
 
     @PostMapping(value = "/newsletter-add-topic")
@@ -62,7 +62,7 @@ class NewsletterController {
         }
         form.setNewTopic(null);
         model.addAttribute("form", form);
-        return "fragments/newsletter-form";
+        return "/fragments/newsletter-form";
     }
 
     @PostMapping(value = "/newsletter-remove-topic/{index}")
@@ -70,7 +70,7 @@ class NewsletterController {
         logger.debug("Removing topic: {}", form.getTopics().get(index));
         form.getTopics().remove(index);
         model.addAttribute("form", form);
-        return "fragments/newsletter-form";
+        return "/fragments/newsletter-form";
     }
 
     @PostMapping(value = "/newsletter-add-source")
@@ -89,7 +89,7 @@ class NewsletterController {
         }
         form.setNewSource(null);
         model.addAttribute("form", form);
-        return "fragments/newsletter-form";
+        return "/fragments/newsletter-form";
     }
 
     @PostMapping(value = "/newsletter-remove-source/{index}")
@@ -97,7 +97,7 @@ class NewsletterController {
         logger.debug("Removing source: {}", form.getSources().get(index));
         form.getSources().remove(index);
         model.addAttribute("form", form);
-        return "fragments/newsletter-form";
+        return "/fragments/newsletter-form";
     }
 
     @PostMapping(value = "/newsletter.html")
@@ -105,7 +105,7 @@ class NewsletterController {
         final var sourceUris = form.getSources().stream().map(URI::create).toList();
         final var newsletter = nf.create(form.getTopics(), sourceUris);
         model.addAttribute("newsletter", newsletter);
-        return "fragments/newsletter";
+        return "/fragments/newsletter";
     }
 }
 
