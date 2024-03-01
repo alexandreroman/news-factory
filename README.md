@@ -13,7 +13,7 @@ Java project.
 
 ## How to build and run this app?
 
-Use Java 21 to build and run this app. 
+Use Java 17+ to build and run this app. 
 
 Use this command to build the app:
 
