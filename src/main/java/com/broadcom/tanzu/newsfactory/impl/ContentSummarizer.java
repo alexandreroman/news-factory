@@ -23,6 +23,7 @@ import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -44,7 +45,7 @@ class ContentSummarizer {
 
     @Value("classpath:/system-prompt.srt")
     private Resource systemPromptRes;
-    @Value("classpath:/summary-prompt.srt")
+    @Value("classpath:/summary-prompt-${newsletter.ai.model}.srt")
     private Resource userPromptRes;
 
     ContentSummarizer(ChatClient cs, ContentFetcher fetcher) {
@@ -71,15 +72,24 @@ class ContentSummarizer {
         logger.info("Generating content summary for {}", source);
         final var outputMsg = cs.call(prompt).getResult().getOutput();
 
-        logger.debug("Got output after summarizing content from {}: {}", source, outputMsg.getContent());
+        logger.info("\n\n\nGot output after summarizing content from {}: {}", source, outputMsg.getContent() + "\n\n\n");
 
-        final Properties articleProps = new Properties();
-        articleProps.load(new StringReader(outputMsg.getContent()));
+        Properties articlePropsCaseSensitive = new Properties();
+        articlePropsCaseSensitive.load(new StringReader(outputMsg.getContent()));
+
+        final Properties articleProps = convertKeysToLowerCase(articlePropsCaseSensitive);
 
         final var entry = new Newsletter.Entry(source, articleProps.getProperty("title"), articleProps.getProperty("summary"));
         if (!StringUtils.hasLength(entry.title()) || !StringUtils.hasLength(entry.content())) {
             throw new IOException("Failed to summarize content from " + source + ": missing title or content");
         }
         return entry;
+    }
+
+    public static Properties convertKeysToLowerCase(Properties properties) {
+        Properties lowercaseProperties = new Properties();
+        properties.forEach((key, value) ->
+                lowercaseProperties.put(((String) key).toLowerCase(), value));
+        return lowercaseProperties;
     }
 }

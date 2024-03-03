@@ -49,12 +49,21 @@
             <artifactId>github-fork-ribbon-css</artifactId>
             <version>0.2.3</version>
         </dependency>
-
+        <!-- AWS Bedrock Llama2 -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-bedrock-ai-spring-boot-starter</artifactId>
+        </dependency>
+        <!-- OpenAI -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-openai-spring-boot-starter</artifactId>
         </dependency>
-
+        <!-- Azure OpenAI -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-azure-openai-spring-boot-starter</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents.client5</groupId>
             <artifactId>httpclient5</artifactId>
