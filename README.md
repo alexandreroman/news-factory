@@ -20,7 +20,11 @@ Use this command to build the app:
 ```shell
 ./mvnw clean package
 ```
-The application was tested with 3 AI providers: OpenAI, Azure OpenAI and AWS Bedrock based on Llama2
+
+## AI Providers
+
+The application was tested with 3 AI providers: OpenAI, Azure OpenAI and AWS Bedrock based on Llama2. Choose the one you preferred and enable it based on the options below.
+
 ### OpenAI
 
 You need an OpenAI API key to run this app.
@@ -33,6 +37,7 @@ Set your API key as an environment variable:
 export OPENAI_API_KEY=xxxxxx
 ```
 Set `newsletter.ai.model` to `openai` in `application.properties`.
+
 Only uncomment `spring-ai-openai-spring-boot-starter` in `pom.xml`, comment the other two spring-ai dependencies.
 
 ### AWS Bedrock based on Llama2
@@ -47,7 +52,9 @@ export AWS_SECRET=xxxxxxxxx
 ```
 
 Change the propety `spring.ai.bedrock.llama2.chat.enabled` to `true` in `application.properties`.
+
 Set `newsletter.ai.model` to `bedrock-llama2` in `application.properties`.
+
 Only uncomment `spring-ai-bedrock-ai-spring-boot-starter` in `pom.xml`, comment the other two spring-ai dependencies.
 
 ### Azure OpenAI
@@ -63,8 +70,8 @@ export AZURE_OPENAPI_ENDPOINT=https://xxxxxx.openai.azure.com/
 export AZURE_OPENAPI_DEPLOYMENT=xxxxxxx
 ```
 Set `newsletter.ai.model` to `azure-openai` in `application.properties`.
-Only uncomment `spring-ai-azure-openai-spring-boot-starter` in `pom.xml`, comment the other two spring-ai dependencies.
 
+Only uncomment `spring-ai-azure-openai-spring-boot-starter` in `pom.xml`, comment the other two spring-ai dependencies.
 
 Use this command to run the app on your local workstation:
 
