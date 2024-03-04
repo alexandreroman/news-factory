@@ -13,6 +13,11 @@ on:
         default: .
         required: false
         description: Maven module
+      maven-profiles:
+        type: string
+        default: default
+        required: false
+        description: Comma-separated Maven profiles
 
 env:
   JAVA_VERSION: 17
@@ -33,4 +38,4 @@ jobs:
         java-version: ${{ env.JAVA_VERSION }}
         cache: maven
     - name: Test app
-      run: ./mvnw -ntp -B -pl ${{ inputs.module }} test
+      run: ./mvnw -ntp -B -pl ${{ inputs.module }} test -P ${{ inputs.maven-profiles }}

@@ -16,3 +16,5 @@ jobs:
   call-test-app:
     if: always()
     uses: ./.github/workflows/_test.yaml
+    with:
+      maven-profiles: openai
