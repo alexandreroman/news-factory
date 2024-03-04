@@ -16,6 +16,7 @@
 
 package com.broadcom.tanzu.newsfactory.impl;
 
+import com.broadcom.tanzu.newsfactory.AIResources;
 import com.broadcom.tanzu.newsfactory.Newsletter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +24,6 @@ import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -42,15 +40,12 @@ class ContentSummarizer {
 
     private final ChatClient cs;
     private final ContentFetcher fetcher;
+    private final AIResources aiResources;
 
-    @Value("classpath:/system-prompt.srt")
-    private Resource systemPromptRes;
-    @Value("classpath:/summary-prompt-${newsletter.ai.model}.srt")
-    private Resource userPromptRes;
-
-    ContentSummarizer(ChatClient cs, ContentFetcher fetcher) {
+    ContentSummarizer(ChatClient cs, ContentFetcher fetcher, AIResources aiResources) {
         this.cs = cs;
         this.fetcher = fetcher;
+        this.aiResources = aiResources;
     }
 
     Newsletter.Entry summarizeContent(List<String> topics, URI source) throws IOException {
@@ -58,10 +53,10 @@ class ContentSummarizer {
         final var content = fetcher.fetchContent(source)
                 .orElseThrow(() -> new IOException("Failed to fetch content from " + source));
 
-        final var sysMsg = new SystemPromptTemplate(systemPromptRes).createMessage();
+        final var sysMsg = new SystemPromptTemplate(aiResources.systemPrompt()).createMessage();
         logger.debug("Created system prompt: {}", sysMsg);
 
-        final var userMsg = new PromptTemplate(userPromptRes).
+        final var userMsg = new PromptTemplate(aiResources.summaryPrompt()).
                 createMessage(Map.of("content", content,
                         "source", source.toURL().toExternalForm(),
                         "topics", String.join(", ", topics))

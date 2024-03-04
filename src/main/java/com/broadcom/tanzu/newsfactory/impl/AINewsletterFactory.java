@@ -16,19 +16,14 @@
 
 package com.broadcom.tanzu.newsfactory.impl;
 
-import com.broadcom.tanzu.newsfactory.Newsletter;
-import com.broadcom.tanzu.newsfactory.NewsletterException;
-import com.broadcom.tanzu.newsfactory.NewsletterFactory;
-import com.broadcom.tanzu.newsfactory.NewsletterProps;
+import com.broadcom.tanzu.newsfactory.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -45,16 +40,13 @@ class AINewsletterFactory implements NewsletterFactory {
     private final ContentSummarizer summarizer;
     private final ChatClient cs;
     private final NewsletterProps np;
+    private final AIResources aiResources;
 
-    @Value("classpath:/system-prompt.srt")
-    private Resource systemPromptRes;
-    @Value("classpath:/newsletter-prompt.srt")
-    private Resource newsletterPromptRes;
-
-    AINewsletterFactory(ContentSummarizer summarizer, ChatClient cs, NewsletterProps np) {
+    AINewsletterFactory(ContentSummarizer summarizer, ChatClient cs, NewsletterProps np, AIResources aiResources) {
         this.summarizer = summarizer;
         this.cs = cs;
         this.np = np;
+        this.aiResources = aiResources;
     }
 
     @Override
@@ -89,10 +81,10 @@ class AINewsletterFactory implements NewsletterFactory {
     }
 
     private String generateIntro(List<String> topics) {
-        final var sysMsg = new SystemPromptTemplate(systemPromptRes).createMessage();
+        final var sysMsg = new SystemPromptTemplate(aiResources.systemPrompt()).createMessage();
         logger.debug("Created system prompt: {}", sysMsg);
 
-        final var newsletterMsg = new PromptTemplate(newsletterPromptRes).
+        final var newsletterMsg = new PromptTemplate(aiResources.newsletterPrompt()).
                 createMessage(Map.of(
                         "topics", String.join(", ", topics))
                 );
