@@ -37,10 +37,7 @@ Use this command to run the app on your local workstation:
 ./mvnw spring-boot:run
 ```
 
-The app is available at http://localhost:8080:
-```shell
-curl -v localhost:8080
-```
+The app is available at http://localhost:8080.
 
 ## Contribute
 
