@@ -5,6 +5,8 @@ on:
     branches:
     - main
     - testing
+    - features/*
+  pull_request:
 
 concurrency:
   group: ${{ github.workflow }}
