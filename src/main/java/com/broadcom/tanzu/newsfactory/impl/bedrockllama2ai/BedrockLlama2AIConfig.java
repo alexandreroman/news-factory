@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.broadcom.tanzu.newsfactory.impl.openai;
+package com.broadcom.tanzu.newsfactory.impl.bedrockllama2ai;
 
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,30 +26,31 @@ import org.springframework.context.annotation.Configuration;
 import com.broadcom.tanzu.newsfactory.AIResources;
 
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(name = "newsletter.ai.model", havingValue = "openai", matchIfMissing = false)
-class OpenAIConfig {
+@ConditionalOnProperty(name = "newsletter.ai.model", havingValue = "bedrockllama2", matchIfMissing = false)
+class BedrockLlama2AIConfig {
 
-	private ChatClient openAiChatClient;
-	
+    private ChatClient bedrockChatClient;
+
 	@Bean
     AIResources aiResources() {
-        return new OpenAIResources();
+        return new BedrockLlama2AIResources();
     }
-    
-    @Autowired
-    @Qualifier("openAiChatClient")
-	private void setOpenAiChatClient(ChatClient openAiChatClient) {
-		this.openAiChatClient = openAiChatClient;
-	}
-    
-    
+
     @Bean
     @Qualifier("newsFactoryChatClient")
     private ChatClient newsFactoryChatClient() {
-    	return getOpenAiChatClient();
+    	return getBedrockChatClient();
     }
 
-	private ChatClient getOpenAiChatClient() {
-		return openAiChatClient;
+	private ChatClient getBedrockChatClient() {
+		return bedrockChatClient;
 	}
+
+	@Autowired
+    @Qualifier("bedrockLlama2ChatClient")
+	private void setBedrockChatClient(ChatClient bedrockChatClient) {
+		this.bedrockChatClient = bedrockChatClient;
+	}
+    
+
 }

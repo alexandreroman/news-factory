@@ -16,23 +16,26 @@
 
 package com.broadcom.tanzu.newsfactory.impl;
 
-import com.broadcom.tanzu.newsfactory.AIResources;
-import com.broadcom.tanzu.newsfactory.Newsletter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.ai.chat.ChatClient;
-import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.ai.chat.prompt.SystemPromptTemplate;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.ai.chat.ChatClient;
+import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.chat.prompt.SystemPromptTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+
+import com.broadcom.tanzu.newsfactory.AIResources;
+import com.broadcom.tanzu.newsfactory.Newsletter;
 
 @Component
 class ContentSummarizer {
@@ -42,7 +45,8 @@ class ContentSummarizer {
     private final ContentFetcher fetcher;
     private final AIResources aiResources;
 
-    ContentSummarizer(ChatClient cs, ContentFetcher fetcher, AIResources aiResources) {
+    @Autowired
+    ContentSummarizer(@Qualifier("newsFactoryChatClient") ChatClient cs, ContentFetcher fetcher, AIResources aiResources) {
         this.cs = cs;
         this.fetcher = fetcher;
         this.aiResources = aiResources;

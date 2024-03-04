@@ -16,9 +16,10 @@
 
 package com.broadcom.tanzu.newsfactory.impl.azureopenai;
 
-import com.broadcom.tanzu.newsfactory.AIResources;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+
+import com.broadcom.tanzu.newsfactory.AIResources;
 
 class AzureOpenAIResources implements AIResources {
     @Value("classpath:/system-prompt.srt")
@@ -27,7 +28,7 @@ class AzureOpenAIResources implements AIResources {
     private Resource newsletterPrompt;
     @Value("classpath:/summary-prompt-azure-openai.srt")
     private Resource summaryPrompt;
-
+    
     @Override
     public Resource systemPrompt() {
         return systemPrompt;

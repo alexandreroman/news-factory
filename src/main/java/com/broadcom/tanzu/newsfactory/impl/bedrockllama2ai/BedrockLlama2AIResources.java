@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package com.broadcom.tanzu.newsfactory.impl.bedrockai;
+package com.broadcom.tanzu.newsfactory.impl.bedrockllama2ai;
 
 import com.broadcom.tanzu.newsfactory.AIResources;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
-class BedrockAIResources implements AIResources {
+class BedrockLlama2AIResources implements AIResources {
     @Value("classpath:/system-prompt.srt")
     private Resource systemPrompt;
     @Value("classpath:/newsletter-prompt.srt")

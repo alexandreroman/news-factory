@@ -59,7 +59,19 @@
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-core</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-openai-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-bedrock-ai-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-azure-openai-spring-boot-starter</artifactId>
+        </dependency>
+        
         <dependency>
             <groupId>org.apache.httpcomponents.client5</groupId>
             <artifactId>httpclient5</artifactId>
@@ -114,34 +126,4 @@
             </snapshots>
         </repository>
     </repositories>
-
-    <profiles>
-        <profile>
-            <id>openai</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.ai</groupId>
-                    <artifactId>spring-ai-openai-spring-boot-starter</artifactId>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>azure-openai</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.ai</groupId>
-                    <artifactId>spring-ai-azure-openai-spring-boot-starter</artifactId>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>bedrock-ai</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.ai</groupId>
-                    <artifactId>spring-ai-bedrock-ai-spring-boot-starter</artifactId>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
 </project>
