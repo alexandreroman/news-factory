@@ -72,7 +72,7 @@ class ContentSummarizer {
         logger.info("Generating content summary for {}", source);
         final var outputMsg = cs.call(prompt).getResult().getOutput();
 
-        logger.info("\n\n\nGot output after summarizing content from {}: {}", source, outputMsg.getContent() + "\n\n\n");
+        logger.debug("Got output after summarizing content from {}: {}", source, outputMsg.getContent());
 
         Properties articlePropsCaseSensitive = new Properties();
         articlePropsCaseSensitive.load(new StringReader(outputMsg.getContent()));
