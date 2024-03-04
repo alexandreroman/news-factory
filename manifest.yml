@@ -1,0 +1,24 @@
+# Create file vars.yml using vars.tpl.yml,
+# and put your credentials here.
+#
+# Run this command to deploy this app to Cloud Foundry:
+# $ cf push --vars-file vars.yml
+---
+version: 1
+applications:
+- name: news-factory 
+  path: target/news-factory-1.0.0-SNAPSHOT.jar
+  memory: 1GB
+  instances: 1
+  buildpacks:
+  - java_buildpack_offline
+
+  health-check-type: http
+  health-check-http-endpoint: /actuator/health/liveness
+  readiness-health-check-type: http
+  readiness-health-check-http-endpoint: /actuator/health/readiness
+
+  env:
+    # Use Java 17 for this app.
+    JBP_CONFIG_OPEN_JDK_JRE: '{ jre: { version: 17.+ } }'
+    OPENAI_API_KEY: ((OPENAI_API_KEY))
