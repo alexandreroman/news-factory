@@ -1,0 +1,36 @@
+name: Test app
+
+on:
+  workflow_call:
+    inputs:
+      working-directory:
+        type: string
+        default: .
+        required: false
+        description: Working directory
+      module:
+        type: string
+        default: .
+        required: false
+        description: Maven module
+
+env:
+  JAVA_VERSION: 17
+
+jobs:
+  test-app:
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/setup-java@v3
+      with:
+        distribution: liberica
+        java-version: ${{ env.JAVA_VERSION }}
+        cache: maven
+    - name: Test app
+      run: ./mvnw -ntp -B -pl ${{ inputs.module }} test

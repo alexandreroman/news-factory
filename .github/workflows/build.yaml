@@ -1,0 +1,16 @@
+name: Build app
+
+on:
+  push:
+    branches:
+    - main
+    - testing
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  call-test-app:
+    if: always()
+    uses: ./.github/workflows/_test.yaml
