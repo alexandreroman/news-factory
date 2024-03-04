@@ -24,7 +24,7 @@
           <div class="row align-items-center" th:if="${form.topics}">
             <div class="col mb-3">
               <button th:each="topic, iter: ${form.topics}"
-                    class="newsletter-topic badge rounded-pill bg-secondary p-2 me-1"
+                    class="newsletter-topic badge rounded-pill bg-secondary p-2 me-1 mb-1"
                     th:hx-post="@{/newsletter-remove-topic/__${iter.index}__}"
                     hx-target="#newsletter" th:text="${topic}"></button>
             </div>
