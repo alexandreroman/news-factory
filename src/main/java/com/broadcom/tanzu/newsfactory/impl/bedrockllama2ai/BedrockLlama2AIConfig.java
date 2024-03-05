@@ -16,21 +16,27 @@
 
 package com.broadcom.tanzu.newsfactory.impl.bedrockllama2ai;
 
+import org.springframework.ai.bedrock.llama2.BedrockLlama2ChatClient;
+import org.springframework.ai.bedrock.llama2.api.Llama2ChatBedrockApi;
 import org.springframework.ai.chat.ChatClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.broadcom.tanzu.newsfactory.AIResources;
 
-@Configuration(proxyBeanMethods = false)
+@Configuration  (proxyBeanMethods = false)
 @ConditionalOnProperty(name = "newsletter.ai.model", havingValue = "bedrockllama2", matchIfMissing = false)
-class BedrockLlama2AIConfig {
+public class BedrockLlama2AIConfig {
 
-    private ChatClient bedrockChatClient;
-
+	@Value("${spring.ai.bedrock.aws.region}")
+	String region;
+	
+	@Value("${spring.ai.bedrock.llama2.chat.model}")
+	String model;
+	
 	@Bean
     AIResources aiResources() {
         return new BedrockLlama2AIResources();
@@ -39,18 +45,9 @@ class BedrockLlama2AIConfig {
     @Bean
     @Qualifier("newsFactoryChatClient")
     private ChatClient newsFactoryChatClient() {
-    	return getBedrockChatClient();
+    	return new BedrockLlama2ChatClient(new Llama2ChatBedrockApi(model, region));
     }
 
-	private ChatClient getBedrockChatClient() {
-		return bedrockChatClient;
-	}
 
-	@Autowired
-    @Qualifier("bedrockLlama2ChatClient")
-	private void setBedrockChatClient(ChatClient bedrockChatClient) {
-		this.bedrockChatClient = bedrockChatClient;
-	}
-    
 
 }

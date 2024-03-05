@@ -18,9 +18,11 @@ package com.broadcom.tanzu.newsfactory;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
-class ApplicationTests {
+@TestPropertySource(properties = {"newsletter.ai.model=azureopenai"})
+class AzureOpenAIApplicationTests {
     @Test
     void contextLoads() {
     }
