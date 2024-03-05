@@ -46,8 +46,8 @@ class ContentSummarizer {
     private final AIResources aiResources;
 
     @Autowired
-    ContentSummarizer(@Qualifier("newsFactoryChatClient") ChatClient cs, ContentFetcher fetcher, AIResources aiResources) {
-        this.cs = cs;
+    ContentSummarizer(ChatClient chatClient, ContentFetcher fetcher, AIResources aiResources) {
+        this.cs = chatClient;
         this.fetcher = fetcher;
         this.aiResources = aiResources;
     }

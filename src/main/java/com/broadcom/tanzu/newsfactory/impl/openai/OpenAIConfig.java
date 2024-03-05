@@ -16,33 +16,25 @@
 
 package com.broadcom.tanzu.newsfactory.impl.openai;
 
+import com.broadcom.tanzu.newsfactory.AIResources;
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.openai.OpenAiChatClient;
 import org.springframework.ai.openai.api.OpenAiApi;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.broadcom.tanzu.newsfactory.AIResources;
-
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = "newsletter.ai.model", havingValue = "openai", matchIfMissing = false)
 class OpenAIConfig {
-
-	@Value("${spring.ai.openai.api-key}")
-	String apiToken;
-	
-	@Bean
+    @Bean
     AIResources aiResources() {
         return new OpenAIResources();
     }
-    
-    @Bean
-    @Qualifier("newsFactoryChatClient")
-    private ChatClient newsFactoryChatClient() {
-    	return new OpenAiChatClient(new OpenAiApi(apiToken));
-    }
 
+    @Bean
+    ChatClient chatClient(@Value("${spring.ai.openai.api-key}") String apiToken) {
+        return new OpenAiChatClient(new OpenAiApi(apiToken));
+    }
 }

@@ -16,39 +16,25 @@
 
 package com.broadcom.tanzu.newsfactory.impl.azureopenai;
 
+import com.broadcom.tanzu.newsfactory.AIResources;
+import org.springframework.ai.azure.openai.AzureOpenAiChatClient;
 import org.springframework.ai.chat.ChatClient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.broadcom.tanzu.newsfactory.AIResources;
+import org.springframework.context.annotation.Primary;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = "newsletter.ai.model", havingValue = "azureopenai", matchIfMissing = false)
 class AzureOpenAIConfig {
-
-    private ChatClient azureOpenAiChatClient;
-
-	@Bean
+    @Bean
     AIResources aiResources() {
         return new AzureOpenAIResources();
     }
 
     @Bean
-    @Qualifier("newsFactoryChatClient")
-    private ChatClient newsFactoryChatClient() {
-    	return getAzureOpenAiChatClient();
+    @Primary
+    ChatClient chatClient(AzureOpenAiChatClient cs) {
+        return cs;
     }
-    
-	private ChatClient getAzureOpenAiChatClient() {
-		return azureOpenAiChatClient;
-	}
-
-	@Autowired
-    @Qualifier("azureOpenAiChatClient")
-	private void setAzureOpenAiChatClient(ChatClient azureOpenAiChatClient) {
-		this.azureOpenAiChatClient = azureOpenAiChatClient;
-	}
 }

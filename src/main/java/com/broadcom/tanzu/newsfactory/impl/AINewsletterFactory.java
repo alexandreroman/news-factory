@@ -23,7 +23,6 @@ import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -43,12 +42,12 @@ class AINewsletterFactory implements NewsletterFactory {
     private final NewsletterProps np;
     private final AIResources aiResources;
 
-    AINewsletterFactory(ContentSummarizer summarizer, 
-    					@Qualifier("newsFactoryChatClient") ChatClient cs, 
-    					NewsletterProps np, 
-    					AIResources aiResources) {
+    AINewsletterFactory(ContentSummarizer summarizer,
+                        ChatClient chatClient,
+                        NewsletterProps np,
+                        AIResources aiResources) {
         this.summarizer = summarizer;
-        this.cs = cs;
+        this.cs = chatClient;
         this.np = np;
         this.aiResources = aiResources;
     }
