@@ -21,7 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
-@TestPropertySource(properties = {"newsletter.ai.model=openai"})
+@TestPropertySource(properties = {"newsletter.ai.model=openai", "spring.ai.openai.api-key=123"})
 class OpenAIApplicationTests {
     @Test
     void contextLoads() {
