@@ -22,7 +22,6 @@ import org.springframework.ai.chat.ChatClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = "newsletter.ai.model", havingValue = "azureopenai", matchIfMissing = false)
@@ -33,7 +32,6 @@ class AzureOpenAIConfig {
     }
 
     @Bean
-    @Primary
     ChatClient chatClient(AzureOpenAiChatClient cs) {
         return cs;
     }
