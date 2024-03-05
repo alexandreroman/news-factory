@@ -38,4 +38,4 @@ jobs:
         java-version: ${{ env.JAVA_VERSION }}
         cache: maven
     - name: Test app
-      run: ./mvnw -ntp -B -pl ${{ inputs.module }} test -P ${{ inputs.maven-profiles }}
+      run: ./mvnw -ntp -B -pl ${{ inputs.module }} test
