@@ -1,10 +1,7 @@
-summarize an article based on the following rules:
+Summarize an article based on the following rules.
 
-The output must follow the given key-value structure:
-
-source: Include the article source here
-title: Include the article title here
-summary: Include the article summary here
+Use the following instructions to format your answer.
+{output}
 
 Find the article source in the SOURCE section.
 Find the article content in the CONTENT section.

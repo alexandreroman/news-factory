@@ -16,38 +16,35 @@
 
 package com.broadcom.tanzu.newsfactory.impl;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
+import com.broadcom.tanzu.newsfactory.AIResources;
+import com.broadcom.tanzu.newsfactory.Newsletter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
+import org.springframework.ai.parser.BeanOutputParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import com.broadcom.tanzu.newsfactory.AIResources;
-import com.broadcom.tanzu.newsfactory.Newsletter;
+import java.io.IOException;
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
 
 @Component
 class ContentSummarizer {
     private final Logger logger = LoggerFactory.getLogger(ContentSummarizer.class);
 
-    private final ChatClient cs;
+    private final ChatClient chatClient;
     private final ContentFetcher fetcher;
     private final AIResources aiResources;
 
     @Autowired
     ContentSummarizer(ChatClient chatClient, ContentFetcher fetcher, AIResources aiResources) {
-        this.cs = chatClient;
+        this.chatClient = chatClient;
         this.fetcher = fetcher;
         this.aiResources = aiResources;
     }
@@ -60,35 +57,25 @@ class ContentSummarizer {
         final var sysMsg = new SystemPromptTemplate(aiResources.systemPrompt()).createMessage();
         logger.debug("Created system prompt: {}", sysMsg);
 
+        final var outputParser = new BeanOutputParser<>(Newsletter.Entry.class);
         final var userMsg = new PromptTemplate(aiResources.summaryPrompt()).
                 createMessage(Map.of("content", content,
                         "source", source.toURL().toExternalForm(),
-                        "topics", String.join(", ", topics))
+                        "topics", String.join(", ", topics),
+                        "output", outputParser.getFormat())
                 );
         logger.debug("Created user prompt: {}", userMsg);
 
         final var prompt = new Prompt(List.of(sysMsg, userMsg));
         logger.info("Generating content summary for {}", source);
-        final var outputMsg = cs.call(prompt).getResult().getOutput();
+        final var outputMsg = chatClient.call(prompt).getResult().getOutput();
 
         logger.debug("Got output after summarizing content from {}: {}", source, outputMsg.getContent());
 
-        Properties articlePropsCaseSensitive = new Properties();
-        articlePropsCaseSensitive.load(new StringReader(outputMsg.getContent()));
-
-        final Properties articleProps = convertKeysToLowerCase(articlePropsCaseSensitive);
-
-        final var entry = new Newsletter.Entry(source, articleProps.getProperty("title"), articleProps.getProperty("summary"));
+        final var entry = outputParser.parse(outputMsg.getContent());
         if (!StringUtils.hasLength(entry.title()) || !StringUtils.hasLength(entry.content())) {
             throw new IOException("Failed to summarize content from " + source + ": missing title or content");
         }
         return entry;
-    }
-
-    public static Properties convertKeysToLowerCase(Properties properties) {
-        Properties lowercaseProperties = new Properties();
-        properties.forEach((key, value) ->
-                lowercaseProperties.put(((String) key).toLowerCase(), value));
-        return lowercaseProperties;
     }
 }
