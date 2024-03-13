@@ -38,7 +38,7 @@ import java.util.concurrent.CompletableFuture;
 class AINewsletterFactory implements NewsletterFactory {
     private final Logger logger = LoggerFactory.getLogger(AINewsletterFactory.class);
     private final ContentSummarizer summarizer;
-    private final ChatClient cs;
+    private final ChatClient chatClient;
     private final NewsletterProps np;
     private final AIResources aiResources;
 
@@ -47,7 +47,7 @@ class AINewsletterFactory implements NewsletterFactory {
                         NewsletterProps np,
                         AIResources aiResources) {
         this.summarizer = summarizer;
-        this.cs = chatClient;
+        this.chatClient = chatClient;
         this.np = np;
         this.aiResources = aiResources;
     }
@@ -94,7 +94,7 @@ class AINewsletterFactory implements NewsletterFactory {
         logger.debug("Created newsletter prompt: {}", newsletterMsg);
 
         final var prompt = new Prompt(List.of(sysMsg, newsletterMsg));
-        return cs.call(prompt).getResult().getOutput().getContent();
+        return chatClient.call(prompt).getResult().getOutput().getContent();
     }
 
     private Newsletter.Entry generateEntry(List<String> topics, URI source) throws IOException {
