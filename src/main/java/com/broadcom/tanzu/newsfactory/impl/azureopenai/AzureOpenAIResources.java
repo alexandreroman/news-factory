@@ -26,7 +26,7 @@ class AzureOpenAIResources implements AIResources {
     private Resource systemPrompt;
     @Value("classpath:/newsletter-prompt.srt")
     private Resource newsletterPrompt;
-    @Value("classpath:/summary-prompt-azure-openai.srt")
+    @Value("classpath:/summary-prompt-openai.srt")
     private Resource summaryPrompt;
     
     @Override
